@@ -1,6 +1,7 @@
 <?php
 /**
- * Renders the free-shipping progress notice on the WooCommerce checkout page.
+ * Renders the free-shipping progress notice on the WooCommerce cart and
+ * checkout pages.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -11,6 +12,7 @@ class ShipThresh_Notice {
 
 	public function __construct() {
 		add_action( 'woocommerce_before_checkout_form', array( $this, 'render_notice' ), 5 );
+		add_action( 'woocommerce_before_cart', array( $this, 'render_notice' ), 5 );
 		add_action( 'wp_head', array( $this, 'render_styles' ) );
 	}
 
@@ -51,31 +53,42 @@ class ShipThresh_Notice {
 	}
 
 	public function render_styles() {
-		if ( ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
+		$on_cart     = function_exists( 'is_cart' ) && is_cart();
+		$on_checkout = function_exists( 'is_checkout' ) && is_checkout();
+
+		if ( ! $on_cart && ! $on_checkout ) {
 			return;
 		}
+
+		$settings         = ShipThresh_Settings::get_settings();
+		$text_color       = sanitize_hex_color( $settings['text_color'] );
+		$background_color = sanitize_hex_color( $settings['background_color'] );
+		$text_color       = $text_color ? $text_color : '#000000';
+		$background_color = $background_color ? $background_color : '#ffd700';
 		?>
 		<style>
 			.shipthresh-notice {
 				margin: 0 0 20px;
 				padding: 12px 16px;
-				background: #f7f7f7;
+				background: <?php echo esc_html( $background_color ); ?>;
+				color: <?php echo esc_html( $text_color ); ?>;
 				border-radius: 6px;
 				font-size: 14px;
 			}
 			.shipthresh-notice p {
 				margin: 0 0 8px;
 				font-weight: 600;
+				color: inherit;
 			}
 			.shipthresh-bar {
 				height: 8px;
-				background: #e0e0e0;
+				background: rgba(0, 0, 0, 0.15);
 				border-radius: 4px;
 				overflow: hidden;
 			}
 			.shipthresh-bar-fill {
 				height: 100%;
-				background: #4caf50;
+				background: currentColor;
 				transition: width 0.3s ease;
 			}
 		</style>

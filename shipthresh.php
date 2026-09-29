@@ -2,8 +2,8 @@
 /**
  * Plugin Name: ShipThresh
  * Plugin URI: https://github.com/squibsy/shipthresh
- * Description: Displays a configurable free-shipping progress message on the WooCommerce checkout page. Message text and spend threshold are editable from an admin settings screen.
- * Version: 1.0.0
+ * Description: Displays a configurable free-shipping progress message on the WooCommerce cart and checkout pages. Message text, spend threshold, and notice colours are editable from an admin settings screen.
+ * Version: 1.1.0
  * Author: Bananalytics
  * Author URI: https://bananalytics.ie
  * License: GPL-2.0-or-later
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SHIPTHRESH_VERSION', '1.0.0' );
+define( 'SHIPTHRESH_VERSION', '1.1.0' );
 define( 'SHIPTHRESH_OPTION_KEY', 'shipthresh_settings' );
 define( 'SHIPTHRESH_FILE', __FILE__ );
 define( 'SHIPTHRESH_DIR', plugin_dir_path( __FILE__ ) );

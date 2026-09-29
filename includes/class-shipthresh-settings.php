@@ -37,6 +37,8 @@ class ShipThresh_Settings {
 			'threshold'        => 60.00,
 			'progress_message' => __( 'Spend {remaining} more to get free shipping!', 'shipthresh' ),
 			'success_message'  => __( '🎉 You’ve unlocked free shipping!', 'shipthresh' ),
+			'text_color'       => '#000000',
+			'background_color' => '#ffd700',
 		);
 	}
 
@@ -96,6 +98,22 @@ class ShipThresh_Settings {
 			self::PAGE_SLUG,
 			'shipthresh_main'
 		);
+
+		add_settings_field(
+			'text_color',
+			__( 'Text colour', 'shipthresh' ),
+			array( $this, 'render_text_color_field' ),
+			self::PAGE_SLUG,
+			'shipthresh_main'
+		);
+
+		add_settings_field(
+			'background_color',
+			__( 'Background colour', 'shipthresh' ),
+			array( $this, 'render_background_color_field' ),
+			self::PAGE_SLUG,
+			'shipthresh_main'
+		);
 	}
 
 	/**
@@ -127,6 +145,20 @@ class ShipThresh_Settings {
 			$success_message = sanitize_text_field( wp_unslash( $input['success_message'] ) );
 			if ( '' !== trim( $success_message ) ) {
 				$output['success_message'] = $success_message;
+			}
+		}
+
+		if ( isset( $input['text_color'] ) ) {
+			$text_color = sanitize_hex_color( wp_unslash( $input['text_color'] ) );
+			if ( $text_color ) {
+				$output['text_color'] = $text_color;
+			}
+		}
+
+		if ( isset( $input['background_color'] ) ) {
+			$background_color = sanitize_hex_color( wp_unslash( $input['background_color'] ) );
+			if ( $background_color ) {
+				$output['background_color'] = $background_color;
 			}
 		}
 
@@ -173,6 +205,30 @@ class ShipThresh_Settings {
 			class="large-text"
 		/>
 		<p class="description"><?php esc_html_e( 'Shown once the customer has reached the threshold.', 'shipthresh' ); ?></p>
+		<?php
+	}
+
+	public function render_text_color_field() {
+		$settings = self::get_settings();
+		?>
+		<input
+			type="color"
+			name="<?php echo esc_attr( SHIPTHRESH_OPTION_KEY ); ?>[text_color]"
+			value="<?php echo esc_attr( $settings['text_color'] ); ?>"
+		/>
+		<p class="description"><?php esc_html_e( 'Colour of the notice text.', 'shipthresh' ); ?></p>
+		<?php
+	}
+
+	public function render_background_color_field() {
+		$settings = self::get_settings();
+		?>
+		<input
+			type="color"
+			name="<?php echo esc_attr( SHIPTHRESH_OPTION_KEY ); ?>[background_color]"
+			value="<?php echo esc_attr( $settings['background_color'] ); ?>"
+		/>
+		<p class="description"><?php esc_html_e( 'Background colour of the notice.', 'shipthresh' ); ?></p>
 		<?php
 	}
 
