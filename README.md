@@ -71,7 +71,7 @@ shipthresh/
 git clone https://github.com/squibsy/shipthresh.git
 ```
 
-Bump `Version:` in `shipthresh.php`'s plugin header (and `SHIPTHRESH_VERSION`) on every release so WordPress prompts for updates correctly.
+Bump the minor version (`Version:` in `shipthresh.php`'s plugin header, and `SHIPTHRESH_VERSION`) with every push to this repo, so WordPress prompts for updates correctly and the version always reflects what's on GitHub.
 
 ## License
 
